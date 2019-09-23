@@ -35,6 +35,12 @@
       <span class="pointer" onclick="changePage('add')">下一页</span>
     </div>
     <div onclick="download()">下载歌曲</div>
+    <div>
+      <select name="" id="" onchange="selectChange()">
+        <option value="HQ">高质</option>
+        <option value="SQ">无损</option>
+      </select>
+    </div>
 
     <div>
       <div id="song-list">
@@ -54,6 +60,8 @@
     var pageSize = 10
     var total = 9999
     var audio = document.querySelector('audio');
+    var formatType = 'HQ'
+    var resourceType = '2'
     audio.onended = function () {
       randomGet()
     };
@@ -127,8 +135,16 @@
     function sing(contentId) {
       // 无损 formatType = SQ resourceType = E
       // 高品 formatType = HQ resourceType = 2
-      let uri = `http://app.pd.nf.migu.cn/MIGUM2.0/v1.0/content/sub/listenSong.do?toneFlag=SQ&netType=00&userId=15548614588710179085069&ua=Android_migu&version=5.1&copyrightId=0&contentId=${contentId}&resourceType=E&channel=1`
+      let uri = `http://app.pd.nf.migu.cn/MIGUM2.0/v1.0/content/sub/listenSong.do?toneFlag=${formatType}&netType=00&userId=15548614588710179085069&ua=Android_migu&version=5.1&copyrightId=0&contentId=${contentId}&resourceType=${resourceType}&channel=1`
       audio.src = uri
+    }
+    function selectChange () {
+      formatType = document.querySelector('select').value
+      if (formatType === 'SQ') {
+        resourceType = 'E'
+      } else {
+        resourceType = '2'
+      }
     }
     function download() {
       window.location.href = audio.src
